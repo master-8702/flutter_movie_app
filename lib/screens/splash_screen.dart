@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 
 import 'package:flutter_movie_app/models/app_config.dart';
 import 'package:flutter_movie_app/services/http_service.dart';
+import 'package:flutter_movie_app/services/movie_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key, required this.onInitializationComplete});
@@ -48,6 +49,11 @@ class _SplashScreenState extends State<SplashScreen> {
     // registering HTTP service
     getIt.registerSingleton<HTTPService>(
       HTTPService(),
+    );
+
+    // registering Movie service
+    getIt.registerSingleton<MovieService>(
+      MovieService(),
     );
   }
 
