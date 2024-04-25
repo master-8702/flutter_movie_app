@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:flutter_movie_app/models/app_config.dart';
+import 'package:flutter_movie_app/services/http_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key, required this.onInitializationComplete});
@@ -43,6 +44,11 @@ class _SplashScreenState extends State<SplashScreen> {
         BASE_API_URL: configData['BASE_API_URL'],
         BASE_IMAGE_API_URL: configData['BASE_IMAGE_API_URL'],
         API_KEY: configData['API_KEY']));
+
+    // registering HTTP service
+    getIt.registerSingleton<HTTPService>(
+      HTTPService(),
+    );
   }
 
   @override
