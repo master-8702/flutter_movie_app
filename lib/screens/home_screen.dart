@@ -1,13 +1,18 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_app/constants/movie_category.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:flutter_movie_app/models/movie.dart';
+import 'package:flutter_movie_app/widgets/movie_tile.dart';
+import 'package:flutter_movie_app/constants/movie_category.dart';
 
 class HomeScreen extends ConsumerWidget {
   late double _width;
   late double _height;
   late TextEditingController _searchTextFieldController;
+
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,8 +25,9 @@ class HomeScreen extends ConsumerWidget {
 
   Widget _buildUI() {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
-      body: Container(
+      body: SizedBox(
         width: _width,
         height: _height,
         child: Stack(
@@ -62,9 +68,15 @@ class HomeScreen extends ConsumerWidget {
       width: _width * 0.88,
       child: Column(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _topBar(),
+          Container(
+            height: _height * 0.83,
+            padding: EdgeInsets.symmetric(vertical: _height * 0.01),
+            child: _moviesListView(),
+          ),
         ],
       ),
     );
@@ -91,7 +103,7 @@ class HomeScreen extends ConsumerWidget {
 
   Widget _searchField() {
     const _border = InputBorder.none;
-    return Container(
+    return SizedBox(
       width: _width * 0.50,
       height: _height * 0.05,
       child: TextField(
@@ -164,5 +176,45 @@ class HomeScreen extends ConsumerWidget {
       ],
       onChanged: (_value) {},
     );
+  }
+
+  Widget _moviesListView() {
+    List<Movie> movies = <Movie>[];
+
+    for (var i = 0; i < 20; i++) {
+      movies.add(Movie(
+          title: 'Kung Fu Panda',
+          language: 'EN',
+          isAdult: false,
+          description:
+              "Po must train a new warrior when he's chosen to become the spiritual leader of the Valley of Peace. However, when a powerful shape-shifting sorceress sets her eyes on his Staff of Wisdom, he suddenly realizes he's going to need some help. Teaming up with a quick-witted corsac fox, Po soon discovers that heroes can be found in the most unexpected places.",
+          posterPath: '/kDp1vUBnMpe8ak4rjgl3cLELqjU.jpg',
+          backdropPath: '/1XDDXPXGiI8id7MrUxK36ke7gkX.jpg',
+          rating: 7.5,
+          releaseDate: '2021-04-07'));
+    }
+    if (movies.isNotEmpty) {
+      return ListView.builder(
+        itemCount: movies.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: _height * 0.01),
+            child: GestureDetector(
+              onTap: () {},
+              child: MovieTile(
+                  movie: movies[index],
+                  height: _height * 0.22,
+                  width: _width * 0.85),
+            ),
+          );
+        },
+      );
+    } else {
+      return const Center(
+        child: CircularProgressIndicator(
+          backgroundColor: Colors.white,
+        ),
+      );
+    }
   }
 }
