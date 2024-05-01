@@ -6,11 +6,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_movie_app/models/movie.dart';
 import 'package:flutter_movie_app/widgets/movie_tile.dart';
 import 'package:flutter_movie_app/constants/movie_category.dart';
+import 'package:flutter_movie_app/models/home_screen_state.dart';
+import 'package:flutter_movie_app/controllers/home_screen_state_controller.dart';
+
 
 class HomeScreen extends ConsumerWidget {
   late double _width;
   late double _height;
   late TextEditingController _searchTextFieldController;
+  late HomeScreenStateController _homeScreenStateController;
+  late HomeScreenState _homeScreenState;
 
   HomeScreen({super.key});
 
@@ -19,6 +24,10 @@ class HomeScreen extends ConsumerWidget {
     _width = MediaQuery.of(context).size.width;
     _height = MediaQuery.of(context).size.height;
     _searchTextFieldController = TextEditingController();
+
+    _homeScreenStateController =
+        ref.watch(homeScreenStateControllerProvider.notifier);
+    _homeScreenState = ref.watch(homeScreenStateControllerProvider);
 
     return _buildUI();
   }
@@ -179,20 +188,8 @@ class HomeScreen extends ConsumerWidget {
   }
 
   Widget _moviesListView() {
-    List<Movie> movies = <Movie>[];
+    List<Movie> movies = _homeScreenState.movies ?? [];
 
-    for (var i = 0; i < 20; i++) {
-      movies.add(Movie(
-          title: 'Kung Fu Panda',
-          language: 'EN',
-          isAdult: false,
-          description:
-              "Po must train a new warrior when he's chosen to become the spiritual leader of the Valley of Peace. However, when a powerful shape-shifting sorceress sets her eyes on his Staff of Wisdom, he suddenly realizes he's going to need some help. Teaming up with a quick-witted corsac fox, Po soon discovers that heroes can be found in the most unexpected places.",
-          posterPath: '/kDp1vUBnMpe8ak4rjgl3cLELqjU.jpg',
-          backdropPath: '/1XDDXPXGiI8id7MrUxK36ke7gkX.jpg',
-          rating: 7.5,
-          releaseDate: '2021-04-07'));
-    }
     if (movies.isNotEmpty) {
       return ListView.builder(
         itemCount: movies.length,
