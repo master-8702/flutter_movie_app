@@ -38,8 +38,8 @@ class HomeScreenStateController extends StateNotifier<HomeScreenState> {
           _movies = [];
         }
       } else {
-        // if non is selected for some reason we will call popular movies
-        _movies = await _movieService.getPopularMovies(page: state.currentPage);
+        // if non is selected we will search a movie
+        _movies = await _movieService.searchMovies(state.searchQuery);
       }
 
       // setting (updating) state
@@ -64,10 +64,22 @@ class HomeScreenStateController extends StateNotifier<HomeScreenState> {
           searchQuery: '');
 
       getMovies();
-      
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
 
+  void updateMovieSearchText(String _searchQuery) {
+    try {
+      state = state.copyWith(
+          movies: [],
+          currentPage: 1,
+          searchCategory: MovieCategory.none,
+          searchQuery: _searchQuery);
+
+      getMovies();
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 }

@@ -28,6 +28,9 @@ class HomeScreen extends ConsumerWidget {
         ref.watch(homeScreenStateControllerProvider.notifier);
     _homeScreenState = ref.watch(homeScreenStateControllerProvider);
 
+    // to display the searched term on the search field after the UI is updated
+    _searchTextFieldController.text = _homeScreenState.searchQuery!;
+
     return _buildUI();
   }
 
@@ -116,7 +119,9 @@ class HomeScreen extends ConsumerWidget {
       height: _height * 0.05,
       child: TextField(
         controller: _searchTextFieldController,
-        onSubmitted: (_input) {},
+        onSubmitted: (_input) {
+          _homeScreenStateController.updateMovieSearchText(_input);
+        },
         style: const TextStyle(color: Colors.white),
         decoration: const InputDecoration(
             focusedBorder: _border,
