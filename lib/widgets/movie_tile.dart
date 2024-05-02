@@ -65,7 +65,7 @@ class MovieTile extends StatelessWidget {
                 ),
               ),
               Text(
-                movie.rating.toString(),
+                movie.rating.toStringAsFixed(1),
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 22,
@@ -86,9 +86,13 @@ class MovieTile extends StatelessWidget {
             padding: EdgeInsets.only(top: height * 0.07),
             child: Text(
               movie.description,
-              maxLines: 9,
+              maxLines: 5,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(color: Colors.white70, fontSize: 10),
+              style: const TextStyle(
+                color: Colors.white70,
+                fontSize: 14,
+              ),
+              textAlign: TextAlign.justify,
             ),
           )
         ],
