@@ -18,7 +18,7 @@ class HomeScreenState {
   HomeScreenState.initial()
       : movies = [],
         currentPage = 1,
-        searchCategory = MovieCategory.latest,
+        searchCategory = MovieCategory.inTheatre,
         searchQuery = '';
 
 // copy with method that we are going to use when the state is partially or

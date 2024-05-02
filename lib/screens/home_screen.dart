@@ -9,7 +9,6 @@ import 'package:flutter_movie_app/constants/movie_category.dart';
 import 'package:flutter_movie_app/models/home_screen_state.dart';
 import 'package:flutter_movie_app/controllers/home_screen_state_controller.dart';
 
-
 class HomeScreen extends ConsumerWidget {
   late double _width;
   late double _height;
@@ -137,7 +136,7 @@ class HomeScreen extends ConsumerWidget {
   Widget _categoryDropdown() {
     return DropdownButton(
       dropdownColor: Colors.black38,
-      value: MovieCategory.latest,
+      value: _homeScreenState.searchCategory,
       icon: const Icon(
         Icons.menu,
         color: Colors.white24,
@@ -148,9 +147,9 @@ class HomeScreen extends ConsumerWidget {
       ),
       items: const [
         DropdownMenuItem(
-          value: MovieCategory.latest,
+          value: MovieCategory.inTheatre,
           child: Text(
-            MovieCategory.latest,
+            MovieCategory.inTheatre,
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -176,14 +175,20 @@ class HomeScreen extends ConsumerWidget {
           ),
         ),
         DropdownMenuItem(
-          value: MovieCategory.upcoming,
+          value: MovieCategory.none,
           child: Text(
             MovieCategory.none,
             style: TextStyle(color: Colors.white),
           ),
         ),
       ],
-      onChanged: (_value) {},
+      onChanged: (_value) {
+        if (_value.toString().isNotEmpty) {
+          _homeScreenStateController.updateMovieCategory(_value.toString());
+        } else {
+          _homeScreenStateController.updateMovieCategory(_value.toString());
+        }
+      },
     );
   }
 
