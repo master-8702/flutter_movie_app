@@ -52,6 +52,9 @@ class HomeScreenStateController extends StateNotifier<HomeScreenState> {
           ..._movies,
         ],
         currentPage: state.currentPage! + 1,
+        backgroundImageUrl: state.backgroundImageUrl!.isEmpty
+            ? _movies[0].posterUrl()
+            : state.backgroundImageUrl,
       );
     } catch (e) {
       debugPrint(e.toString());
@@ -61,10 +64,12 @@ class HomeScreenStateController extends StateNotifier<HomeScreenState> {
   void updateMovieCategory(String _category) {
     try {
       state = state.copyWith(
-          movies: [],
-          currentPage: 1,
-          searchCategory: _category,
-          searchQuery: '');
+        movies: [],
+        currentPage: 1,
+        searchCategory: _category,
+        searchQuery: '',
+        backgroundImageUrl: '',
+      );
 
       getMovies();
     } catch (e) {
@@ -81,6 +86,15 @@ class HomeScreenStateController extends StateNotifier<HomeScreenState> {
           searchQuery: _searchQuery);
 
       getMovies();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+// to update the background image dynamically based on the selected movie
+  void updateBackgroundImageUrl(String url) {
+    try {
+      state = state.copyWith(backgroundImageUrl: url);
     } catch (e) {
       debugPrint(e.toString());
     }

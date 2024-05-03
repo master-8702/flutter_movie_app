@@ -6,12 +6,14 @@ class HomeScreenState {
   final int? currentPage;
   final String? searchCategory;
   final String? searchQuery;
+  final String? backgroundImageUrl;
 
   HomeScreenState({
     this.movies,
     this.currentPage,
     this.searchCategory,
     this.searchQuery,
+    this.backgroundImageUrl,
   });
 
   // initial state of home screen
@@ -19,7 +21,8 @@ class HomeScreenState {
       : movies = [],
         currentPage = 1,
         searchCategory = MovieCategory.inTheatre,
-        searchQuery = '';
+        searchQuery = '',
+        backgroundImageUrl = '';
 
 // copy with method that we are going to use when the state is partially or
 // fully changed
@@ -27,12 +30,13 @@ class HomeScreenState {
       {List<Movie>? movies,
       int? currentPage,
       String? searchCategory,
-      String? searchQuery}) {
+      String? searchQuery,
+      String? backgroundImageUrl}) {
     return HomeScreenState(
-      movies: movies ?? this.movies,
-      currentPage: currentPage ?? this.currentPage,
-      searchCategory: searchCategory ?? this.searchCategory,
-      searchQuery: searchQuery ?? this.searchQuery,
-    );
+        movies: movies ?? this.movies,
+        currentPage: currentPage ?? this.currentPage,
+        searchCategory: searchCategory ?? this.searchCategory,
+        searchQuery: searchQuery ?? this.searchQuery,
+        backgroundImageUrl: backgroundImageUrl ?? this.backgroundImageUrl);
   }
 }

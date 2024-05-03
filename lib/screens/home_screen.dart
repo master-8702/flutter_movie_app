@@ -15,7 +15,6 @@ class HomeScreen extends ConsumerWidget {
   late TextEditingController _searchTextFieldController;
   late HomeScreenStateController _homeScreenStateController;
   late HomeScreenState _homeScreenState;
-
   HomeScreen({super.key});
 
   @override
@@ -59,8 +58,9 @@ class HomeScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         image: DecorationImage(
-          image: NetworkImage(
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSKiAdLbAUFESx_QtMnn77aRd6TeezDMvfutBbG547FA&s'),
+          image: _homeScreenState.backgroundImageUrl!.isNotEmpty
+              ? NetworkImage(_homeScreenState.backgroundImageUrl!)
+              : const AssetImage('assets/images/movie.png') as ImageProvider,
           fit: BoxFit.cover,
         ),
       ),
@@ -204,10 +204,10 @@ class HomeScreen extends ConsumerWidget {
       // here the NotificationListener will help us to fetch more movies when
       // we reach the end of the current fetched movie list (the ListView).
       return NotificationListener(
-        onNotification: (_onScrollnotification) {
-          if (_onScrollnotification is ScrollEndNotification) {
-            final before = _onScrollnotification.metrics.extentBefore;
-            final max = _onScrollnotification.metrics.maxScrollExtent;
+        onNotification: (_onScrollNotification) {
+          if (_onScrollNotification is ScrollEndNotification) {
+            final before = _onScrollNotification.metrics.extentBefore;
+            final max = _onScrollNotification.metrics.maxScrollExtent;
 
             // if before == max that means we reach the end of our list, so we
             // can call getMovies() and since the currentPage value of our state
@@ -227,7 +227,10 @@ class HomeScreen extends ConsumerWidget {
             return Padding(
               padding: EdgeInsets.symmetric(vertical: _height * 0.01),
               child: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  _homeScreenStateController
+                      .updateBackgroundImageUrl(movies[index].posterUrl());
+                },
                 child: MovieTile(
                     movie: movies[index],
                     height: _height * 0.22,
