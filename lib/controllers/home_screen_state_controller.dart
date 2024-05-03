@@ -43,6 +43,9 @@ class HomeScreenStateController extends StateNotifier<HomeScreenState> {
       }
 
       // setting (updating) state
+      // here we will increment the currentPage variable by one in order to
+      // facilitate for the next fetch request, so that when we want to fetch
+      // the next page (set of movies) we will just call getMovies().
       state = state.copyWith(
         movies: [
           ...state.movies!,

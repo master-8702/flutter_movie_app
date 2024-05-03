@@ -201,20 +201,41 @@ class HomeScreen extends ConsumerWidget {
     List<Movie> movies = _homeScreenState.movies ?? [];
 
     if (movies.isNotEmpty) {
-      return ListView.builder(
-        itemCount: movies.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.symmetric(vertical: _height * 0.01),
-            child: GestureDetector(
-              onTap: () {},
-              child: MovieTile(
-                  movie: movies[index],
-                  height: _height * 0.22,
-                  width: _width * 0.85),
-            ),
-          );
+      // here the NotificationListener will help us to fetch more movies when
+      // we reach the end of the current fetched movie list (the ListView).
+      return NotificationListener(
+        onNotification: (_onScrollnotification) {
+          if (_onScrollnotification is ScrollEndNotification) {
+            final before = _onScrollnotification.metrics.extentBefore;
+            final max = _onScrollnotification.metrics.maxScrollExtent;
+
+            // if before == max that means we reach the end of our list, so we
+            // can call getMovies() and since the currentPage value of our state
+            // is already incremented by one,when movies are fetched last (first)
+            // time, we will fetch the next page.
+            if (before == max) {
+              _homeScreenStateController.getMovies();
+              return true;
+            }
+            return false;
+          }
+          return false;
         },
+        child: ListView.builder(
+          itemCount: movies.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: EdgeInsets.symmetric(vertical: _height * 0.01),
+              child: GestureDetector(
+                onTap: () {},
+                child: MovieTile(
+                    movie: movies[index],
+                    height: _height * 0.22,
+                    width: _width * 0.85),
+              ),
+            );
+          },
+        ),
       );
     } else {
       return const Center(
